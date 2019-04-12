@@ -1,10 +1,10 @@
-*** Web Server
+### Web Server
 
-  - a piece of software designed to accept incoming web requests
+- a piece of software designed to accept incoming web requests
 
-*** HTTP request
+### HTTP request
 
-  - **HTTP Request** is a packet of Information that one computer sends to another computer to communicate something. To its core, HTTP Request is a packet of binary data sent by the Client to server. An HTTP Request contains three parts: request line, headers and body.
+- **HTTP Request** is a packet of Information that one computer sends to another computer to communicate something. To its core, HTTP Request is a packet of binary data sent by the Client to server. An HTTP Request contains three parts: request line, headers and body.
 
   - Request line: A Request Line specifies the Method Token (GET, PUT … ) followed by the Request URI and then the HTTP Protocol that is being used
 
@@ -12,7 +12,7 @@
 
   - An optional Body of the request: Request Body is the part of the HTTP Request where additional content can be sent to the server.
 
-  **** A GET request
+  #### A GET request
 
     `https://www.google.com/`
 
@@ -32,6 +32,14 @@
 
     - fragment: #string-pattern-matching
 
-https://www.toolsqa.com/rest-assured/what-is-rest/
+  #### Common request method
 
-    
+    - GET: retrieve something
+
+    - POST: receive data and use it
+
+    - PUT: make sure something is there
+
+    - DELETE: remove something
+
+https://www.toolsqa.com/rest-assured/what-is-rest/
