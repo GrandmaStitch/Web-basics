@@ -107,9 +107,21 @@
 
     - The headers end with a blank line. Everything after that blank line is part of the response body. If the request was successful (a 200 OK status, for instance), this is a copy of whatever resource the client asked for — such as a web page, image, or other pieces of data. But in the case of an error, the response body is where the error message goes! If you request a page that doesn't exist, and you get a 404 Not Found error, the actual error message shows up in the response body.
 
-![HTTP response](imgs/response.png)
+    ![HTTP response](imgs/response.png)
+
+### URL quoting
+  
+  - HTTP URLs aren't allowed to contain spaces or certain other characters. So if you want to send these characters in an HTTP request, they have to be translated into a "URL-safe" or "URL-quoted" format. if that isn't confusing enough, it's sometimes also referred to as **URL-encoding** or **URL-escaping**.
+
+  - One of the features of the URL-quoted format is that spaces are sometimes translated into plus signs. Other special characters are translated into hexadecimal codes that begin with the percent sign.
+
+
 
 
 https://www.toolsqa.com/rest-assured/what-is-rest/
 
 https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+
+https://tools.ietf.org/html/rfc1034
+
+http://web.mit.edu/6.005/www/fa15/classes/21-sockets-networking/
