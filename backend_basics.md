@@ -68,5 +68,24 @@
 
   - Finally, the last two fields deal with the lifetime of the cookie — how long it should last. The creation time is just the time of the response that set the cookie. The expiration time is when the server wants the browser to stop saving the cookie. There are two different ways a server can set this: it can set an Expires field with a specific date and time, or a Max-Age field with a number of seconds. **If no expiration field is set, then a cookie is expired when the browser closes**.
 
+&nbsp;
 
+### DNS domains and cookie security
+
+  - Domain names play a few other roles in HTTP besides just being easier to remember than IP addresses. A DNS domain links a particular hostname to a computer's IP address. But it also indicates that the owner of that domain intends for that computer to be treated as part of that domain.
+
+  - Imagine what a bad guy could do if they could convince your browser that their server *evilbox* was part of (say) *Facebook*, and get you to request *a Facebook URL* from *evilbox* instead of from *Facebook's real servers*. Your browser would send your *facebook.com* cookies to *evilbox* along with that request. But these cookies are what prove your identity to Facebook … so then the bad guy could use those cookies to access your Facebook account and send spam messages to all your friends.
+
+  - This is just one reason that DNS is essential to web security. If a bad guy can take control of your site's DNS domain, they can send all your web traffic to their evil server … and if the bad guy can fool users' browsers into sending that traffic their way, they can steal the users' cookies and reuse them to break into those users' accounts on your site.
+
+&nbsp;
+
+### HTTPS
+
+  - When a browser and a server speak HTTPS, they're just speaking HTTP, but over an encrypted connection. The encryption follows a standard protocol called **Transport Layer Security**, or TLS for short. TLS provides some important guarantees for web security:
+
+    - It keeps the connection private by encrypting everything sent over it. Only the server and browser should be able to read what's being sent.
+    - It lets the browser authenticate the server. For instance, when a user accesses https://www.udacity.com/, they can be sure that the response they're seeing is really from Udacity's servers and not from an impostor.
+    - It helps protect the integrity of the data sent over that connection — checking that it has not been (accidentally or deliberately) modified or replaced.
+    - TLS is also very often referred to by the older name SSL (Secure Sockets Layer). Technically, SSL is an older version of the encryption protocol.
 
