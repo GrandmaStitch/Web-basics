@@ -110,16 +110,48 @@
     ![HTTP response](imgs/response.png)
 
 ### URL quoting
-  
+
   - HTTP URLs aren't allowed to contain spaces or certain other characters. So if you want to send these characters in an HTTP request, they have to be translated into a "URL-safe" or "URL-quoted" format. if that isn't confusing enough, it's sometimes also referred to as **URL-encoding** or **URL-escaping**.
 
   - One of the features of the URL-quoted format is that spaces are sometimes translated into plus signs. Other special characters are translated into hexadecimal codes that begin with the percent sign.
 
 ### Post-Redirect-Get
-  
+
   - There's a very common design pattern for interactive HTTP applications and APIs, called the PRG or Post-Redirect-Get pattern. A client POSTs to a server to create or update a resource; on success, the server replies not with a 200 OK but with a 303 redirect. The redirect causes the client to GET the created or updated resource. This is just one of many, many ways to architect a web application, but it's one that makes good use of HTTP methods to accomplish specific goals. For instance, wiki sites such as Wikipedia often use Post-Redirect-Get when you edit a page.
 
   - One big advantage of Post-Redirect-Get is that as a user, every page you actually see is the result of a GET request, which means you can bookmark it, reload it, and so forth — without ever accidentally resubmitting a form.
+
+### PUT for creating resources
+
+  - The HTTP PUT method can be used for creating a new resources. The client sends the URI path that it wants to create, and a piece of data in the request body. A server could implement PUT in a number of different ways — such as storing a file on disk, or adding records to a database. A server should respond to a PUT request with a 201 Created status code, if the PUT action completed successfully. After a successful PUT, a GET request to the same URI should return the newly created resource.
+
+  - PUT can be used for actions such as uploading a file to a web site. However, it's not the most common way to do file uploads. PUT has to be done in application code (e.g. JavaScript), whereas with another method it's possible to do uploads with just HTML on the client side. Most file uploads are done via [POST requests](https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications).
+
+### DELETE for, well, deleting things
+
+  - The destructive counterpart to PUT is DELETE, for removing a resource from the server. After a DELETE has happened successfully, further GET requests for that resource will yield 404 Not Found ... unless, of course, a new resource is later created with the same name! Most applications that involve creating and deleting resources on the server are going to require authentication, to make sure that the client is actually someone we want to trust with that power.
+
+### PATCH for making changes
+
+  - The PATCH method is a relatively new addition to HTTP. It expresses the idea of patching a resource, or changing it in some well-defined way. (If you've used Git, you can think of patching as what applying a Git commit does to the files in a repository.)
+
+  - However, just as HTTP doesn't specify what format a resource has to be in, it also doesn't specify in what format a patch can be in: how it should represent the changes that are intended to be applied. That's up to the application to decide. An application could send diffs over HTTP PATCH requests, for instance. One standardized format for PATCH requests is the [JSON Patch](http://jsonpatch.com/) format, which expresses changes to a piece of JSON data. A different one is [JSON Merge Patch](https://tools.ietf.org/html/rfc7386).
+
+### HEAD, OPTIONS, TRACE for debugging
+
+  - There are a number of additional methods that HTTP supports for various sorts of debugging and examining servers.
+
+    - **HEAD** works just like GET, except the server doesn't return any content — just headers.
+    - **OPTIONS** can be used to find out what features the server supports.
+    - **TRACE** echoes back what the server received from the client — but is often disabled for security reasons.
+
+### Great responsibility
+
+  HTTP can't prevent a service from using methods to mean something different from what they're intended to mean, but this can have some surprising effects. For instance, you could create a service that used a GET request to delete content. However, web clients don't expect GET requests to have side-effects like that. In one famous case from 2006, an organization put up a web site where "edit" and "delete" actions happened through GET requests, and the result was that [the next search-engine web crawler to come along deleted the whole site](http://thedailywtf.com/articles/The_Spider_of_Doom).
+
+### The standard tells all
+
+  For much more about HTTP methods, consult the [HTTP standards documents](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html).
 
 
 https://www.toolsqa.com/rest-assured/what-is-rest/
