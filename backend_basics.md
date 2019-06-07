@@ -18,11 +18,11 @@
 
 ### Concurrent users
 
-  - Handling a large number of network connections at once turns out to be complicated — even more so than plugging concurrency support into your Python web service. 
+  - Handling a large number of network connections at once turns out to be complicated — even more so than plugging concurrency support into your Python web service.
 
   - As you may have noticed in your own use of the web, it takes time for a server to respond to a request. The server has to receive and parse the request, come up with the data that it needs to respond, and transmit the response back to the client. The network itself is not instantaneous; it takes time for data to travel from the client to the server. In addition, a browser is totally allowed to open up multiple connections to the same server, for instance to request resources such as images, or to perform API queries.
 
-  - All of this means that if a server is handling many requests per second, there will be many requests in progress at once — literally, at any instant in time. We sometimes refer to these as in-flight requests, meaning that the request has "taken off" from the client, but the response has not "landed" again back at the client. A web service can't just handle one request at a time and then go on to the next one; it has to be able to handle many at once. 
+  - All of this means that if a server is handling many requests per second, there will be many requests in progress at once — literally, at any instant in time. We sometimes refer to these as in-flight requests, meaning that the request has "taken off" from the client, but the response has not "landed" again back at the client. A web service can't just handle one request at a time and then go on to the next one; it has to be able to handle many at once.
 
 &nbsp;
 
@@ -30,7 +30,7 @@
 
   - Imagine a web service that does a lot of complicated processing for each request — something like calculating the best route for a trip between two cities on a map. Pretty often, users make the same request repeatedly: imagine if you load up that map, and then you reload the page — or if someone else loads the same map. It's useful if the service can avoid recalculating something it just figured out a second ago. It's also useful if the service can avoid re-sending a large object (such as an image) if it doesn't have to.
 
-  - One way that web services avoid this is by making use of a cache, **a temporary storage for resources that are likely to be reused**. Web systems can perform caching in a number of places — but all of them are under control of the server that serves up a particular resource. That server can set HTTP headers indicating that a particular resource is not intended to change quickly, and can safely be cached. 
+  - One way that web services avoid this is by making use of a cache, **a temporary storage for resources that are likely to be reused**. Web systems can perform caching in a number of places — but all of them are under control of the server that serves up a particular resource. That server can set HTTP headers indicating that a particular resource is not intended to change quickly, and can safely be cached.
 
   - There are a few places that caching usually can happen. Every user's browser maintains **a browser cache of cacheable resources** — such as images from recently-viewed web pages. The browser can also be configured to pass requests through **a web proxy**, which can perform caching on behalf of many users. Finally, a web site can use **a reverse proxy** to cache results so they don't need to be recomputed by a slower application server or database. **All HTTP caching is supposed to be governed by cache control headers set by the server**. You can read a lot more about them in [this article](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching) by Google engineer Ilya Grigorik.
 
@@ -88,4 +88,56 @@
     - It lets the browser authenticate the server. For instance, when a user accesses https://www.udacity.com/, they can be sure that the response they're seeing is really from Udacity's servers and not from an impostor.
     - It helps protect the integrity of the data sent over that connection — checking that it has not been (accidentally or deliberately) modified or replaced.
     - TLS is also very often referred to by the older name SSL (Secure Sockets Layer). Technically, SSL is an older version of the encryption protocol.
+
+  - Keys and certificates
+
+    - The server-side configuration for TLS includes two important pieces of data: **a private key** and **a public certificate**. The private key is secret; it's held on the server and never leaves there. The certificate is sent to every browser that connects to that server via TLS. These two pieces of data are mathematically related to each other in a way that makes the encryption of TLS possible.
+    - The server's certificate is issued by an organization called a **certificate authority** (CA). The certificate authority's job is to make sure that the server really is who it says it is — for instance, that a certificate issued in the name of Heroku is actually being used by the Heroku organization and not by someone else.
+    - The role of a certificate authority is kind of like getting a document notarized. A notary public checks your ID and witnesses you sign a document, and puts their stamp on it to indicate that they did so.
+
+  - How does TLS assure privacy?
+
+    - The data in the TLS certificate and the server's private key are mathematically related to each other through a system called [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography). The important part is that the two endpoints (the browser and server) can securely agree on a shared secret which allows them to scramble the data sent between them so that only the other endpoint — and not any eavesdropper — can unscramble it.
+
+  - How does TLS assure authentication?
+
+    - A server certificate indicates that an encryption key belongs to a particular organization responsible for that service. It's the job of a certificate authority to make sure that they don't issue a cert for (say) udacity.com to someone other than the company who actually runs that domain. But the cert also contains metadata that says what DNS domain the certificate is good for. When the browser connects to a particular server, if the TLS domain metadata doesn't match the DNS domain, the browser will reject the certificate and put up a big scary warning to tell the user that something fishy is going on.
+
+  - How does TLS assure integrity?
+
+    - Every request and response sent over a TLS connection is sent with a [message authentication code](https://en.wikipedia.org/wiki/Message_authentication_code) (MAC) that the other end of the connection can verify to make sure that the message hasn't been altered or damaged in transit.
+
+&nbsp;
+
+### HTTP/2
+
+  - The new version of HTTP is called HTTP/2. It's based on earlier protocol work done at Google, under the name SPDY (pronounced "speedy"). The HTTP/2 one is (on average) a whole lot faster, especially with high latency. Check [CanIUse.com](http://caniuse.com/#feat=http2) to check that your browser does!
+
+  - Why is HTTP/2 faster than HTTP/1
+
+    - Since the early days of HTTP, browsers have kept open multiple connections to a server. This lets the browser fetch several resources (such as images, scripts, etc.) in parallel, with less waiting. However, the browser only opens up a small number of connections to each server. And in HTTP/1.1, each connection can only request a single resource at a time. Common browsers such as Chrome, Firefox, and Safari open up as many as six connections to the same server. And under HTTP/1.1, only one request can effectively be in flight per connection, which means that they can only have up to six requests in flight with that server at a time.
+    - if you're requesting hundreds of different tiny files from the server — as in this demo or the Gophertiles demo — it's kind of limiting to only be able to fetch six at a time. This is particularly true when the latency (delay) between the server and browser gets high. The browser can't start fetching the seventh image until it's fully loaded the first six. The greater the latency, the worse this affects the user experience.
+    - HTTP/2 changes this around by **multiplexing** requests and responses over a single connection. The browser can send several requests all at once, and the server can send responses as quickly as it can get to them. There's no limit on how many can be in flight at once.
+    - When you load a web page, your browser first fetches the HTML, and then it goes back and fetches other resources such as stylesheets or images. But if the server already knows that you will want these other resources, why should it wait for your browser to ask for them in a separate request? HTTP/2 has a feature called **[server push](https://en.wikipedia.org/wiki/HTTP/2_Server_Push)** which allows the server to say, effectively, "If you're asking for index.html, I know you're going to ask for style.css too, so I'm going to send it along as well."
+    - The HTTP/2 protocol was being designed around the same time that web engineers were getting even more interested in encrypting all traffic on the web for privacy reasons. Early drafts of HTTP/2 proposed that encryption should be required for sites to use the new protocol. This ended up being removed from the official standard … but most of the browsers did it anyway! Chrome, Firefox, and other browsers will only attempt HTTP/2 with a site that is using TLS encryption.
+
+  - HTTP/2 demos:
+
+    - [the Gophertiles demo](https://http1.golang.org/gophertiles?latency=1000)
+    - http://www.http2demo.io/
+    - https://http2.akamai.com/demo
+
+  - Read much more about HTTP/2 in the [HTTP/2 FAQ](https://http2.github.io/faq/)
+
+&nbsp;
+
+### Resources
+
+  - Here are some handy resources for learning more about HTTP:
+
+    - [Mozilla Developer Network's HTTP index page](https://developer.mozilla.org/en-US/docs/Web/HTTP) contains a variety of tutorial and reference materials on every aspect of HTTP.
+    - The standards documents for HTTP/1.1 start at [RFC 7230](https://tools.ietf.org/html/rfc7230). The language of Internet standards tends to be a little difficult, but these are the official description of how it's supposed to work.
+    - The standards documents for HTTP/2 are at https://http2.github.io/.
+    - If you already run your own web site, [Let's Encrypt](https://letsencrypt.org/) is a great site to learn about HTTPS in a hands-on way, by creating your own HTTPS certificates and installing them on your site.
+    - [HTTP Spy](https://chrome.google.com/webstore/detail/http-spy/agnoocojkneiphkobpcfoaenhpjnmifb?hl=en) is a neat little Chrome extension that will show you the headers and request information for every request your browser makes.
 
