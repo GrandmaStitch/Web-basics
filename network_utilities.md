@@ -1,5 +1,9 @@
 ### Some useful network utility programs
 
+- nmap, tcpdump, traceroute, mtr
+
+- Networking diagnostic tools including *ping*, *traceroute*, and *mtr* use Internet Control Message Protocol (ICMP) packets to test contention and traffic between two points on the Internet.
+
 
 ### nmap toolkit
 
@@ -16,7 +20,31 @@
   `ncat -l <url> <port>`
   listen to the port
 
-  `ncat -l <url> <port> <hello.html`
+  `ncat -l <url> <port> < hello.html`
 
   `ncat <url> <port>`
+
+### Some useful commands
+
+- `ip route show`
+
+- `ping -c3 8.8.8.8`
+
+- look up the IP address for a website
+  `host <domain-name>`
+  `dig <domain-name>`
+
+- `host -t aaaa www.google.com`
+
+- `host -t mx www.google.com`
+
+- `tcpdump -c5 host www.google.com`
+
+- `traceroute www.google.com`
+
+- `mtr www.google.com`
+
+- `printf 'HEAD / HTTP/1.1\r\nHost: www.google.com\r\n\r\n' | nc www.google.com 80`
+
+- `printf 'GET / HTTP/1.1\r\nHost: www.google.com\r\n\r\n' | nc www.google.com 80`
 
