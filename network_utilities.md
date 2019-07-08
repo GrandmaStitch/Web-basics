@@ -48,3 +48,9 @@
 
 - `printf 'GET / HTTP/1.1\r\nHost: www.google.com\r\n\r\n' | nc www.google.com 80`
 
+- `ip addr show`
+
+- `ip route show default`
+
+- `netstat -nr`
+
