@@ -1,6 +1,6 @@
 ### Some useful network utility programs
 
-- nmap, tcpdump, traceroute, mtr
+- nmap, tcpdump, traceroute, mtr, net-tools
 
 - Networking diagnostic tools including *ping*, *traceroute*, and *mtr* use Internet Control Message Protocol (ICMP) packets to test contention and traffic between two points on the Internet.
 
@@ -40,6 +40,10 @@
 
 - `tcpdump -c5 host www.google.com`
 
+- `tcpdump -n host 8.8.8.8`
+
+- `tcupdump -n port 53` (monitor the DNS lookup)
+
 - `traceroute www.google.com`
 
 - `mtr www.google.com`
@@ -53,4 +57,6 @@
 - `ip route show default`
 
 - `netstat -nr`
+
+
 
