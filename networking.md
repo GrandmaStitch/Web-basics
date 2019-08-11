@@ -89,25 +89,24 @@ However, not all of the possible 32-bit values are used for real addresses. Some
 
 - TCP flags
 
-  `22:02:54.723421 IP 93.184.216.34.80 > 192.168.1.101.49365: Flags [S.], seq 4022969080, ack 3736858665, win 65535, options [mss 1448,sackOK,TS val 3338386426 ecr 2311164443,nop,wscale 9], length 0`
+  ```22:02:54.723421 IP 93.184.216.34.80 > 192.168.1.101.49365: Flags [S.], seq 4022969080, ack 3736858665, win 65535, options [mss 1448,sackOK,TS val 3338386426 ecr 2311164443,nop,wscale 9], length 0```
 
   - Each TCP packet record that we look at in tcpdump has a section called Flags that appears right after the address and port information. It has one or more letters or dots inside square brackets. +Take a look at the tcpdump data again. We'll see different packets having flags such as `[S]`, `[S.]`, `[.]`, `[P.]`, and `[F.]`. The Flags field in tcpdump tells us which flags, or control bits, are set on each TCP packet.
 
   - In low-level computer languages, a **flag** is a Boolean value — a true or false value — that is stored in memory as a single bit. If a flag bit is 1, we say the flag is set. If the flag bit is 0, the flag is cleared (or unset). Usually, flags come in groups, each of which can be set or cleared.
 
   - The original TCP packet format has six flags. Two more optional flags have since been standardized, but they are much less important to the basic functioning of TCP. For each packet, **tcpdump** will show you which flags are set on that packet.
-
-  > SYN(synchronize)`[S]` — This packet is opening a new TCP session and contains a new initial sequence number.
-  >
-  > FIN(finish)`[F]` — This packet is used to close a TCP session normally. The sender is saying that they are finished sending, but they can still receive data from the other endpoint.
-  >
-  > PSH(push)`[P]` — This packet is the end of a chunk of application data, such as an HTTP request.
-  >
-  > RST(reset)`[R]` — This packet is a TCP error message; the sender has a problem and wants to reset (abandon) the session.
-  >
-  > ACK(acknowledge)`[.]` — This packet acknowledges that its sender has received data from the other endpoint. *Almost every packet except the first SYN will have the ACK flag set*.
-  >
-  > URG(urgent)`[U]` — This packet contains data that needs to be delivered to the application out-of-order. Not used in HTTP or most other current applications.
+    > SYN(synchronize)`[S]` — This packet is opening a new TCP session and contains a new initial sequence number.
+    >
+    > FIN(finish)`[F]` — This packet is used to close a TCP session normally. The sender is saying that they are finished sending, but they can still receive data from the other endpoint.
+    >
+    > PSH(push)`[P]` — This packet is the end of a chunk of application data, such as an HTTP request.
+    >
+    > RST(reset)`[R]` — This packet is a TCP error message; the sender has a problem and wants to reset (abandon) the session.
+    >
+    > ACK(acknowledge)`[.]` — This packet acknowledges that its sender has received data from the other endpoint. *Almost every packet except the first SYN will have the ACK flag set*.
+    >
+    > URG(urgent)`[U]` — This packet contains data that needs to be delivered to the application out-of-order. Not used in HTTP or most other current applications.
 
   ```
   14:39:31.899348 IP 192.168.1.101.54298 > 182.61.200.6.80: Flags [S], seq 1268802434, win 65535, options [mss 1460,nop,wscale 5,nop,nop,TS val 2319976256 ecr 0,sackOK,eol], length 0
@@ -177,10 +176,10 @@ However, not all of the possible 32-bit values are used for real addresses. Some
 
 - TTL(time to live)
 
-  ![TheStoryOfTraceroute](imgs/traceroute1.png)
+  ![TheStoryOfTraceroute](imgs/Traceroute1.png)
   Every packet has a time to live or TTL field, which starts at some large number and is reduced by one each time that packet hits a router. As it moves through the network, each router reduces the TTL on the packet by one as it passes it on, all the way until it finally gets to its destination.
 
-  ![TheStoryOfTraceroute](imgs/traceroute2.png)
+  ![TheStoryOfTraceroute](imgs/Traceroute2.png)
   This helps keep momentary loops from crashing large parts of the network with an overload of traffic. When a packet's TTL is 0, it means the TTL is expired. When a packet's TTL expires, the router that last received it, sends a tiny error message back to the packet's original sender.
 
 - Network speed
