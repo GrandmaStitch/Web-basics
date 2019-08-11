@@ -19,24 +19,23 @@
   - The Resolver: the DNS client code built into every operating system.
 
   - DNS record types:
-
-  > A(A-Record): IPv4 address record. It is the IPv4 IP address belonging to the hostname of the domain.
-  >
-  > AAAA: IPv6 address record.
-  >
-  > ANY: all records of all types known to the name server
-  >
-  > CNAME: Canonical name record. Alias of one name to another: the DNS lookup will continue by retrying the lookup with the new name.
-  >
-  > MX: Mail exchange record. Maps a domain name to a list of message transfer agents for that domain.
-  >
-  > NS: Name server record.
-  >
-  > PTR: Pointer record.
-  >
-  > SIG: Signature.
-  >
-  > SOA: Start of authority record.
+    > A(A-Record): IPv4 address record. It is the IPv4 IP address belonging to the hostname of the domain.
+    >
+    > AAAA: IPv6 address record.
+    >
+    > ANY: all records of all types known to the name server
+    >
+    > CNAME: Canonical name record. Alias of one name to another: the DNS lookup will continue by retrying the lookup with the new name.
+    >
+    > MX: Mail exchange record. Maps a domain name to a list of message transfer agents for that domain.
+    >
+    > NS: Name server record.
+    >
+    > PTR: Pointer record.
+    >
+    > SIG: Signature.
+    >
+    > SOA: Start of authority record.
 
   - `www.google.com` is the CNAME of the `google.com`. It's pretty much a style and branding preference.
 
@@ -89,7 +88,9 @@ However, not all of the possible 32-bit values are used for real addresses. Some
 
 - TCP flags
 
-  ```22:02:54.723421 IP 93.184.216.34.80 > 192.168.1.101.49365: Flags [S.], seq 4022969080, ack 3736858665, win 65535, options [mss 1448,sackOK,TS val 3338386426 ecr 2311164443,nop,wscale 9], length 0```
+  ```
+  22:02:54.723421 IP 93.184.216.34.80 > 192.168.1.101.49365: Flags [S.], seq 4022969080, ack 3736858665, win 65535, options [mss 1448,sackOK,TS val 3338386426 ecr 2311164443,nop,wscale 9], length 0
+  ```
 
   - Each TCP packet record that we look at in tcpdump has a section called Flags that appears right after the address and port information. It has one or more letters or dots inside square brackets. +Take a look at the tcpdump data again. We'll see different packets having flags such as `[S]`, `[S.]`, `[.]`, `[P.]`, and `[F.]`. The Flags field in tcpdump tells us which flags, or control bits, are set on each TCP packet.
 
