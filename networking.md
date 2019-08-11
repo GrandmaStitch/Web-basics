@@ -187,9 +187,8 @@ However, not all of the possible 32-bit values are used for real addresses. Some
 
   Bandwidth and latency are the two networky things that people often mean when they refer to speed of a network connection.
 
-  > bandwidth in bits/second
-  >
-  > delay or latency in seconds
+  > - bandwidth in bits/second
+  > - delay or latency in seconds
 
   > bandwidth-delay product: the amount of data that can be in transit through a connection. bits/seconds\*seconds = bits
 
